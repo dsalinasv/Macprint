@@ -158,10 +158,10 @@ begin
     txtFolder.Text:= ReadString('Configuracion', 'Folder', ExtractFileDir(ParamStr(0)));
     rgOrientacion.ItemIndex:= ReadInteger('Configuracion', 'Orientacion', 0);
     rgImpresion.ItemIndex:= ReadInteger('Configuracion', 'Impresion', 0);
-    txtSuperior.Text:= ReadString('Configuracion', 'MargenSuperior', '1');
-    txtInferior.Text:= ReadString('Configuracion', 'MargenInferior', '1');
-    txtIzquierdo.Text:= ReadString('Configuracion', 'MargenIzquierdo', '3');
-    txtDerecho.Text:= ReadString('Configuracion', 'MargenDerecho', '3');
+    txtSuperior.Text:= ReadString('Configuracion', 'MargenSuperior', '10');
+    txtInferior.Text:= ReadString('Configuracion', 'MargenInferior', '5');
+    txtIzquierdo.Text:= ReadString('Configuracion', 'MargenIzquierdo', '10');
+    txtDerecho.Text:= ReadString('Configuracion', 'MargenDerecho', '10');
   finally
      Free;
   end;
@@ -198,7 +198,7 @@ begin
   begin
 
   end;
-  if (AFolderItem.Action = faModified) or (AFolderItem.Action = faNew) then
+  if (AFolderItem.Action = faModified) then
   begin
     AssignFile(MyTextFile, FileName);
     Reset(MyTextFile);
@@ -247,13 +247,13 @@ begin
 //    if ckbAttrChange.Checked then
 //      Include(vMonitoredChanges, ctAttr);
 //    if ckbSizeChange.Checked then
-    Include(vMonitoredChanges, ctSize);
+//    Include(vMonitoredChanges, ctSize);
 //    if ckbWriteTimeChange.Checked then
-//      Include(vMonitoredChanges, ctLastWriteTime);
+    Include(vMonitoredChanges, ctLastWriteTime);
 //    if ckbAccessTimeChange.Checked then
 //      Include(vMonitoredChanges, ctLastAccessTime);
 //    if ckbCreationTimeChange.Checked then
-      Include(vMonitoredChanges, ctCreationTime);
+//    Include(vMonitoredChanges, ctCreationTime);
 //    if ckbSecurityAttrChanges.Checked then
 //      Include(vMonitoredChanges, ctSecurityAttr);
   FFolderMon.MonitoredChanges := vMonitoredChanges;

@@ -151,7 +151,7 @@ object frmMain: TfrmMain
       Height = 21
       NumbersOnly = True
       TabOrder = 0
-      Text = '1'
+      Text = '10'
     end
     object txtInferior: TEdit
       Left = 58
@@ -160,7 +160,7 @@ object frmMain: TfrmMain
       Height = 21
       NumbersOnly = True
       TabOrder = 1
-      Text = '0'
+      Text = '5'
     end
     object txtIzquierdo: TEdit
       Left = 3
@@ -169,7 +169,7 @@ object frmMain: TfrmMain
       Height = 21
       NumbersOnly = True
       TabOrder = 2
-      Text = '3'
+      Text = '10'
     end
     object txtDerecho: TEdit
       Left = 113
@@ -178,7 +178,7 @@ object frmMain: TfrmMain
       Height = 21
       NumbersOnly = True
       TabOrder = 3
-      Text = '3'
+      Text = '10'
     end
   end
   object TrayIcon: TTrayIcon

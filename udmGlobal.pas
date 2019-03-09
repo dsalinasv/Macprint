@@ -12,6 +12,7 @@ type
     cdsText: TClientDataSet;
     cdsTextData: TMemoField;
     fdsText: TfrxDBDataset;
+    procedure DataModuleCreate(Sender: TObject);
   private
     { Private declarations }
   public
@@ -35,20 +36,17 @@ uses
 
 { TdmGlobal }
 
+procedure TdmGlobal.DataModuleCreate(Sender: TObject);
+begin
+  cdsText.CreateDataSet;
+end;
+
 procedure TdmGlobal.imprimir;
 begin
   frxText.Print;
 end;
 
 procedure TdmGlobal.ConfigurarPagina(ori, sup, inf, izq, der: integer);
-
-function UnitsTomm(mm: Extended; X: Boolean = True): Extended;
-begin
-  if X then
-    Result := Round(mm) * fr1CharX / fr01cm
-  else
-    Result := Round(mm) * fr1CharY / fr01cm;
-end;
 begin
   with TfrxReportPage(frxText.Pages[1]) do
   begin
@@ -56,10 +54,10 @@ begin
       0: Orientation:= poPortrait;
       1: Orientation:= poLandscape;
     end;
-    LeftMargin := UnitsTomm(izq);
-    RightMargin := UnitsTomm(der);
-    TopMargin := UnitsTomm(sup, False);
-    BottomMargin := UnitsTomm(inf, False);
+    LeftMargin := izq;
+    RightMargin := der;
+    TopMargin := sup;
+    BottomMargin := inf;
   end;
 end;
 
