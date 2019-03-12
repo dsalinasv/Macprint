@@ -54,7 +54,7 @@ begin
       0: Orientation:= poPortrait;
       1: Orientation:= poLandscape;
     end;
-    LeftMargin := izq;
+    LeftMargin := izq ;
     RightMargin := der;
     TopMargin := sup;
     BottomMargin := inf;

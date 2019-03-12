@@ -4,7 +4,7 @@ object dmGlobal: TdmGlobal
   Height = 150
   Width = 215
   object frxText: TfrxReport
-    Version = '6.0.7'
+    Version = '6.2.1'
     DotMatrixReport = False
     IniFile = '\Software\Fast Reports'
     PreviewOptions.Buttons = [pbPrint, pbLoad, pbSave, pbExport, pbZoom, pbFind, pbOutline, pbPageSetup, pbTools, pbEdit, pbNavigator, pbExportQuick]
@@ -32,13 +32,9 @@ object dmGlobal: TdmGlobal
       Width = 1000.000000000000000000
     end
     object Page1: TfrxReportPage
-      PaperWidth = 216.000000000000000000
-      PaperHeight = 279.000000000000000000
+      PaperWidth = 215.900000000000000000
+      PaperHeight = 279.400000000000000000
       PaperSize = 1
-      LeftMargin = 10.000000000000000000
-      RightMargin = 10.000000000000000000
-      TopMargin = 10.000000000000000000
-      BottomMargin = 5.000000000000000000
       Frame.Typ = []
       object MasterData1: TfrxMasterData
         FillType = ftBrush
@@ -51,13 +47,14 @@ object dmGlobal: TdmGlobal
         Height = 15.118120000000000000
         ParentFont = False
         Top = 18.897650000000000000
-        Width = 740.787880000000000000
+        Width = 816.000527000000000000
         DataSet = fdsText
         DataSetName = 'fdsText'
         RowCount = 0
         object fdsTextData: TfrxMemoView
           IndexTag = 1
-          Width = 740.787880000000000000
+          AllowVectorExport = True
+          Width = 816.378480000000000000
           Height = 15.118120000000000000
           DataField = 'Data'
           DataSet = fdsText

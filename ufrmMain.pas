@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, FolderMon, Vcl.StdCtrls, Vcl.Menus,
-  Vcl.ExtCtrls, System.Actions, Vcl.ActnList, dxGDIPlusClasses;
+  Vcl.ExtCtrls, System.Actions, Vcl.ActnList;
 
 type
   TfrmMain = class(TForm)
@@ -59,7 +59,7 @@ implementation
 
 {$R *.dfm}
 
-uses udmGlobal, IniFiles, ShellApi, ShlObj;
+uses udmGlobal, IniFiles, IOUtils, ShellApi, ShlObj;
 
 procedure TfrmMain.actCerrarExecute(Sender: TObject);
 begin
@@ -152,8 +152,15 @@ begin
 end;
 
 procedure TfrmMain.LeerConfiguracion;
+var
+  MacDir: String;
 begin
-  with TIniFile.Create(GetAppDataFolder + '\Macprint\Config.ini') do
+  MacDir:= GetAppDataFolder + '\Macprint';
+  if not TDirectory.Exists(MacDir) then
+  begin
+    TDirectory.CreateDirectory(MacDir);
+  end;
+  with TIniFile.Create(MacDir + '\Config.ini') do
   try
     txtFolder.Text:= ReadString('Configuracion', 'Folder', ExtractFileDir(ParamStr(0)));
     rgOrientacion.ItemIndex:= ReadInteger('Configuracion', 'Orientacion', 0);
@@ -206,8 +213,7 @@ begin
     begin
       dmGlobal.cdsText.Append;
       Readln(MyTextFile, Text);
-      if Text <> EmptyStr then
-        dmGlobal.cdsTextData.Value:= Text;
+      dmGlobal.cdsTextData.Value:= Text;
     end;
     CloseFile(MyTextFile);
   end;
