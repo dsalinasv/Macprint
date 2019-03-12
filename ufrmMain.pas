@@ -270,7 +270,7 @@ begin
 //    if ckbSecurityAttrChanges.Checked then
 //      Include(vMonitoredChanges, ctSecurityAttr);
   FFolderMon.MonitoredChanges := vMonitoredChanges;
-  FFolderMon.MonitorSubFolders := True;
+  FFolderMon.MonitorSubFolders := False;
   FFolderMon.Activate;
 end;
 
