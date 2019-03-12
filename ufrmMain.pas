@@ -59,7 +59,7 @@ implementation
 
 {$R *.dfm}
 
-uses udmGlobal, IniFiles, IOUtils, ShellApi, ShlObj;
+uses udmGlobal, IniFiles, IOUtils, ShellApi, ShlObj, TextStreamUnit;
 
 procedure TfrmMain.actCerrarExecute(Sender: TObject);
 begin
@@ -170,7 +170,7 @@ begin
     txtIzquierdo.Text:= ReadString('Configuracion', 'MargenIzquierdo', '10');
     txtDerecho.Text:= ReadString('Configuracion', 'MargenDerecho', '10');
   finally
-     Free;
+    Free;
   end;
 end;
 
@@ -192,42 +192,49 @@ begin
     CloseHandle(HFileRes);
 end;
 
+function MemoryStreamToString( M : TMemoryStream) : string;
+begin
+  SetString( Result,PChar(M.Memory),M.Size div SizeOf(Char)); // Works in all Delphi versions
+end;
+
 procedure TfrmMain.HandleFolderChange(ASender: TFolderMon;
   AFolderItem: TFolderItemInfo);
 var
   FileName: String;
-  MyTextFile: TextFile;
-  Text: String;
+  TextStream:TTextStream;
+  Text:String;
 begin
+  FFolderMon.Deactivate;
   dmGlobal.cdsText.EmptyDataSet;
   FileName:= ASender.Folder + '\' + AFolderItem.Name;
   while IsFileInUse(FileName) do
   begin
 
   end;
-  if (AFolderItem.Action = faModified) then
+  if (AFolderItem.Action = faNew) or (AFolderItem.Action = faModified) then
   begin
-    AssignFile(MyTextFile, FileName);
-    Reset(MyTextFile);
-    while not Eof(MyTextFile) do
-    begin
-      dmGlobal.cdsText.Append;
-      Readln(MyTextFile, Text);
-      dmGlobal.cdsTextData.Value:= Text;
+    try
+      TextStream:= TTextStream.Create(FileName, fm_OpenReadShared);
+      while not TextStream.Eof do begin
+        dmGlobal.cdsText.Append;
+        dmGlobal.cdsTextData.Value:= TextStream.ReadLine;
+      end;
+    finally
+      TextStream.Free;
     end;
-    CloseFile(MyTextFile);
+    dmGlobal.ConfigurarPagina(
+      rgOrientacion.ItemIndex,
+      StrToIntDef(txtSuperior.Text, 0),
+      StrToIntDef(txtInferior.Text, 0),
+      StrToIntDef(txtIzquierdo.Text, 0),
+      StrToIntDef(txtDerecho.Text, 0));
+    case rgImpresion.ItemIndex of
+      0: dmGlobal.Visualizar;
+      1: dmGlobal.Imprimir;
+      2: ShellExecute(Handle, nil, PChar('notepad.exe'), PChar(FileName), nil, SW_SHOWNORMAL);
+    end;
   end;
-  dmGlobal.ConfigurarPagina(
-    rgOrientacion.ItemIndex,
-    StrToIntDef(txtSuperior.Text, 0),
-    StrToIntDef(txtInferior.Text, 0),
-    StrToIntDef(txtIzquierdo.Text, 0),
-    StrToIntDef(txtDerecho.Text, 0));
-  case rgImpresion.ItemIndex of
-    0: dmGlobal.Visualizar;
-    1: dmGlobal.Imprimir;
-    2: ShellExecute(Handle, nil, PChar('notepad.exe'), PChar(FileName), nil, SW_SHOWNORMAL);
-  end;
+  FFolderMon.Activate;
 end;
 
 procedure TfrmMain.HandleFolderMonActivated(ASender: TObject);
@@ -247,7 +254,7 @@ begin
   FFolderMon.Folder := txtFolder.Text;
   vMonitoredChanges := [];
 //    if ckbFilenameChange.Checked then
-//      Include(vMonitoredChanges, ctFileName);
+      Include(vMonitoredChanges, ctFileName);
 //    if ckbDirNameChange.Checked then
 //      Include(vMonitoredChanges, ctDirName);
 //    if ckbAttrChange.Checked then
@@ -259,7 +266,7 @@ begin
 //    if ckbAccessTimeChange.Checked then
 //      Include(vMonitoredChanges, ctLastAccessTime);
 //    if ckbCreationTimeChange.Checked then
-//    Include(vMonitoredChanges, ctCreationTime);
+    Include(vMonitoredChanges, ctCreationTime);
 //    if ckbSecurityAttrChanges.Checked then
 //      Include(vMonitoredChanges, ctSecurityAttr);
   FFolderMon.MonitoredChanges := vMonitoredChanges;

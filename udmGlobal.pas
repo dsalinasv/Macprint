@@ -17,6 +17,7 @@ type
     { Private declarations }
   public
     { Public declarations }
+    showing: boolean;
     procedure visualizar;
     procedure imprimir;
     procedure ConfigurarPagina(ori, sup, inf, izq, der: integer);

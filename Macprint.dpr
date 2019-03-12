@@ -2,10 +2,12 @@ program Macprint;
 
 uses
   MidasLib,
-  Windows, Vcl.Forms,
+  Windows,
+  Vcl.Forms,
   ufrmMain in 'ufrmMain.pas' {frmMain},
   FolderMon in 'FolderMon.pas',
-  udmGlobal in 'udmGlobal.pas' {dmGlobal: TDataModule};
+  udmGlobal in 'udmGlobal.pas' {dmGlobal: TDataModule},
+  TextStreamUnit in 'TextStreamUnit.pas';
 
 {$R *.res}
 
