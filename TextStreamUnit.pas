@@ -210,8 +210,8 @@ begin
     Inc(LStreamIndex);
 
     case Buf[n] of
-      cQuote: {34} // quote
-        QuoteFlag := not QuoteFlag;
+//      cQuote: {34} // quote
+//        QuoteFlag := not QuoteFlag;
       cLf: {10} // linefeed
         if not QuoteFlag then
           Break;
